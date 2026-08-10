@@ -47,17 +47,29 @@ revenue (what sportsbooks take in), not what the state collects — that's
 while high-tax states like New York and New Hampshire (both 51%) move up. Any claim about "how
 much states benefit" that uses raw revenue figures is measuring the wrong thing.
 
-**5. On cost:** the dataset has no dollar-denominated cost data, only `problem_gambling_rate`.
-State tax revenue per capita correlates weakly-to-modestly with problem gambling rate (r ≈ 0.38)
-— consistent with more betting activity driving both, not evidence the tax revenue itself is
-harmful. No sign of lottery revenue being cannibalized by sports betting revenue in this snapshot
-(r ≈ 0.25, weakly positive, though this is cross-sectional and can't establish before/after
-substitution).
+**5. On cost:** `problem_gambling_rate` is a prevalence rate, not a dollar figure. State tax
+revenue per capita correlates weakly-to-modestly with it (r ≈ 0.38) — consistent with more
+betting activity driving both, not evidence the tax revenue itself is harmful. No sign of lottery
+revenue being cannibalized by sports betting revenue in this snapshot (r ≈ 0.25, weakly positive,
+though this is cross-sectional and can't establish before/after substitution).
 
 ![State tax revenue vs problem gambling rate](images/tax_revenue_vs_problem_gambling.png)
 
+**6. A real dollar figure, with a real limit.** `pg_services_spend_per_capita_2023` is actual
+state spending on problem gambling prevention/treatment, transcribed from a
+[NAADGS/Problem Gambling Solutions report](https://naadgs.org/wp-content/uploads/2024/06/2023-Budget-Update-of-Publicly-Funded-Problem-Gambling-Services-USA.pdf).
+Netting it against `state_tax_revenue_per_capita` gives a **net fiscal benefit** that's positive
+for every legalized state in this dataset except three showing $0 state tax revenue (Florida,
+Washington, Wisconsin — their sports betting runs through tribal compacts not captured as taxed
+commercial revenue here). But this is a *fiscal* net, not a *social* one: state PG spend doesn't
+correlate with problem gambling rate (r ≈ 0.07), and academic estimates of the full social cost
+per problem gambler (healthcare, lost productivity, bankruptcy, crime) run from roughly
+$1,200–$10,000+/year — well above what states currently allocate per capita. If real social costs
+scale anywhere near that, the picture could look very different from the fiscal-only numbers.
+
 **Bottom line:** nothing here says the revenue isn't worth it, but nothing here can say it is,
-either — a real verdict needs monetized social cost data this dataset doesn't have.
+either — the fiscal side looks positive almost everywhere, but a real verdict needs the
+full-social-cost data this dataset still doesn't have.
 
 ## Methodology
 
@@ -67,8 +79,10 @@ either — a real verdict needs monetized social cost data this dataset doesn't 
   leave-one-out cross-validation (LOO-CV) given the small sample.
 - **Revenue model**: OLS for an in-sample read, then Ridge + LOO-CV across a range of
   regularization strengths for an honest out-of-sample estimate.
-- **Cost vs. benefit**: descriptive correlation only (no causal or monetized claims) between
-  state tax revenue per capita, tax rate, lottery revenue, and problem gambling rate.
+- **Cost vs. benefit**: descriptive correlation between state tax revenue per capita, tax rate,
+  lottery revenue, problem gambling rate, and real (sourced) state problem-gambling-services
+  spending per capita — no causal claims, and the spending figure is a fiscal floor, not a full
+  social-cost estimate.
 
 Full code and narrative are in [`data.ipynb`](data.ipynb).
 
@@ -77,7 +91,10 @@ Full code and narrative are in [`data.ipynb`](data.ipynb).
 - Small sample (33–51 states depending on model) relative to the number of predictors.
 - Cross-sectional snapshot — no time-series data, so no before/after or causal claims are
   possible.
-- No monetized cost data for problem gambling, only a prevalence rate.
+- No full monetized social-cost data for problem gambling — `problem_gambling_rate` is a
+  prevalence rate, and `pg_services_spend_per_capita_2023` is state mitigation spending (from a
+  single external report, values read off a chart to the nearest $0.10), not the broader economic
+  burden (healthcare, lost productivity, bankruptcy, crime).
 
 ## Setup
 
