@@ -71,10 +71,21 @@ scale anywhere near that, the picture could look very different from the fiscal-
 either — the fiscal side looks positive almost everywhere, but a real verdict needs the
 full-social-cost data this dataset still doesn't have.
 
+**7. A first step toward panel data.** `betting_data_panel.csv` adds real annual state population
+(Census Population Estimates Program, 2020–2024) and two years of PG-services spend per capita
+(2023, 2024). The national average rose ($0.47 → $0.52/capita), but the state-level picture is
+mixed — Massachusetts, Oregon, and Kansas grew the most while Minnesota and Maryland cut back —
+and the year-over-year change doesn't correlate with state tax revenue growth (r ≈ 0.08),
+reinforcing that these budgets move on legislative earmarks, not measured need or revenue.
+A longer sports-betting-*revenue* time series was attempted and deliberately dropped: the
+available sources either only cover 2 years cleanly, bundle in unrelated tax categories, or only
+exist in a format unreliable to extract at scale (see Limitations).
+
 ## Methodology
 
 - **Data**: `betting_data.csv` — one row per US state (51, including DC), with legalization
-  status/timing, revenue, demographics, and political/economic covariates.
+  status/timing, revenue, demographics, and political/economic covariates. `betting_data_panel.csv`
+  — a state-year panel (2020–2024) with real annual population and 2 years of PG-services spend.
 - **Legalization model**: logistic regression, features standardized, evaluated with
   leave-one-out cross-validation (LOO-CV) given the small sample.
 - **Revenue model**: OLS for an in-sample read, then Ridge + LOO-CV across a range of
@@ -89,12 +100,24 @@ Full code and narrative are in [`data.ipynb`](data.ipynb).
 ## Limitations
 
 - Small sample (33–51 states depending on model) relative to the number of predictors.
-- Cross-sectional snapshot — no time-series data, so no before/after or causal claims are
-  possible.
+- `betting_data.csv` is cross-sectional (one snapshot) for revenue and demographics — no
+  before/after or causal claims are possible from it. `betting_data_panel.csv` is a real annual
+  panel, but only for population (2020–2024) and PG-services spend (2023–2024 only) — 2 years is
+  too short to call a trend.
 - No full monetized social-cost data for problem gambling — `problem_gambling_rate` is a
-  prevalence rate, and `pg_services_spend_per_capita_2023` is state mitigation spending (from a
-  single external report, values read off a chart to the nearest $0.10), not the broader economic
-  burden (healthcare, lost productivity, bankruptcy, crime).
+  prevalence rate, and `pg_services_spend_per_capita_2023`/`2024` is state mitigation spending
+  (from a single external report, values read off charts to the nearest $0.10), not the broader
+  economic burden (healthcare, lost productivity, bankruptcy, crime).
+- A multi-year sports-betting-revenue panel was attempted and dropped. Census's tax data only
+  breaks out a "sports betting" category starting late 2023, and that category explicitly bundles
+  in pari-mutuel (horse/dog racing) betting per Census's own classification manual — confirmed by
+  non-legal-sports-betting states (Alabama, Texas) showing nonzero values. The industry's own
+  multi-year source (AGA's annual "State of the States" reports) has true sports-betting-only
+  figures, but only inside per-state narrative writeups, not a clean table — extracting that
+  reliably for every state across several years was judged not worth the effort/error trade-off.
+- Lottery revenue is single-snapshot only. A real historical series exists (Census's
+  "Income and Apportionment of State-Administered Lottery Funds" table), but it's gated behind a
+  Census API key tied to a registered email, which wasn't pursued in this pass.
 
 ## Setup
 
