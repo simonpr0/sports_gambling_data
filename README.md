@@ -1,6 +1,6 @@
 # Sports Gambling Data
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/simonpr0/sports_gambling_data/blob/main/data.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/simonpr0/Sports_Gambling_Exploratory_Analysis/blob/main/data.ipynb)
 ![Python 3.13](https://img.shields.io/badge/python-3.13-blue)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
@@ -126,4 +126,4 @@ pip install -r requirements.txt
 jupyter notebook data.ipynb
 ```
 
-Or skip local setup entirely and use the [Colab link](https://colab.research.google.com/github/simonpr0/sports_gambling_data/blob/main/data.ipynb) above.
+Or skip local setup entirely and use the [Colab link](https://colab.research.google.com/github/simonpr0/Sports_Gambling_Exploratory_Analysis/blob/main/data.ipynb) above.
